@@ -1,9 +1,11 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Business.Abstract;
+using Business.CCS;
 using Business.Concrete;
 using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
+using Core.Utilities.Security.JsonWebToken;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using System;
@@ -19,8 +21,14 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();//birisi senden Iproductservice isterse productmanager ı new leyip ver
             builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
 
+            builder.RegisterType<CategoryManager>().As<ICategoryService>().SingleInstance();
+            builder.RegisterType<EfCategoryDal>().As<ICategoryDal>().SingleInstance();
 
+            builder.RegisterType<UserManager>().As<IUserService>();
+            builder.RegisterType<EfUserDal>().As<IUserDal>();
 
+            builder.RegisterType<AuthManager>().As<IAuthService>();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
